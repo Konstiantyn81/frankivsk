@@ -41,21 +41,29 @@
                         <i class="fa-solid fa-building text-xl"></i>
                     </div>
                     <div>
-                        <span class="text-2xl font-extrabold bg-gradient-to-r from-slate-900 to-brand-700 bg-clip-text text-transparent">Frankivsk Estate</span>
-                        <span class="block text-xs text-slate-500 font-medium -mt-1">Каталог нерухомості (Live DB)</span>
+                        <span class="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-slate-900 to-brand-700 bg-clip-text text-transparent">Frankivsk Estate</span>
+                        <span class="block text-xs text-slate-500 font-medium -mt-1">Каталог нерухомості</span>
                     </div>
                 </a>
 
-                <div class="flex items-center gap-3 sm:gap-4">
-                    <button id="favsToggleBtn" onclick="toggleFavoritesView()" class="relative flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 transition-colors font-medium text-sm">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Кнопка заявки для клієнтів -->
+                    <button onclick="openLeadModal()" class="flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl border border-brand-500/30 bg-brand-50 hover:bg-brand-100 text-brand-700 transition-colors font-semibold text-xs sm:text-sm">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                        <span class="hidden md:inline">Підібрати житло</span>
+                    </button>
+
+                    <!-- Обране -->
+                    <button id="favsToggleBtn" onclick="toggleFavoritesView()" class="relative flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 transition-colors font-medium text-xs sm:text-sm">
                         <i class="fa-solid fa-heart text-rose-500"></i>
                         <span class="hidden sm:inline">Обране</span>
                         <span id="favsBadge" class="bg-rose-500 text-white text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center">0</span>
                     </button>
 
-                    <button onclick="openAddModal()" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white shadow-md transition-all font-medium text-sm">
+                    <!-- Додати об'єкт -->
+                    <button onclick="openAddModal()" class="flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white shadow-md transition-all font-medium text-xs sm:text-sm">
                         <i class="fa-solid fa-plus"></i>
-                        <span class="hidden md:inline">Додати об'єкт</span>
+                        <span class="hidden lg:inline">Додати об'єкт</span>
                     </button>
                 </div>
             </div>
@@ -73,7 +81,7 @@
                     Нерухомість Івано-Франківська
                 </h1>
                 <p class="text-slate-300 text-base sm:text-lg mb-8">
-                    Каталог нерухомості з прямою інтеграцією оголошень Rieltor.ua та хмарною синхронізацією.
+                    Знайдіть ідеальну квартиру чи будинок з прямими посиланнями на перевірені оголошення.
                 </p>
 
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-800">
@@ -83,11 +91,16 @@
                     </div>
                     <div>
                         <div class="text-2xl font-bold text-brand-500">Rieltor.ua</div>
-                        <div class="text-xs text-slate-400">Авто-фото та посилання</div>
+                        <div class="text-xs text-slate-400">Прямі посилання</div>
                     </div>
                     <div class="col-span-2 sm:col-span-1">
-                        <div class="text-2xl font-bold text-white">Firebase</div>
-                        <div class="text-xs text-slate-400">База в реальному часі</div>
+                        <button onclick="openLeadModal()" class="w-full h-full py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-left px-3 transition-colors flex items-center justify-between">
+                            <div>
+                                <div class="text-xs font-bold text-brand-400">Шукаєте житло?</div>
+                                <div class="text-[11px] text-slate-400">Залиште заявку рієлтору</div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-slate-500"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -164,7 +177,7 @@
         </div>
     </main>
 
-    <!-- Add Modal -->
+    <!-- Modal 1: Add Property Modal -->
     <div id="addModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full p-6 my-8 relative">
             <div class="flex justify-between items-center mb-6 pb-3 border-b border-slate-100">
@@ -215,6 +228,8 @@
                             <option value="БАМ">БАМ</option>
                             <option value="Каскад">Каскад</option>
                             <option value="Крихівці">Крихівці</option>
+                            <option value="Вовчинець">Вовчинець</option>
+                            <option value="Набережна">Набережна</option>
                         </select>
                     </div>
                 </div>
@@ -243,6 +258,53 @@
                 <div class="pt-2 flex justify-end gap-3 border-t border-slate-100">
                     <button type="button" onclick="closeAddModal()" class="px-5 py-2.5 border rounded-xl text-sm">Скасувати</button>
                     <button type="submit" id="submitBtn" class="px-5 py-2.5 bg-brand-600 text-white rounded-xl text-sm font-semibold">Зберегти в базу</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Lead / Property Request Modal (Підібрати нерухомість) -->
+    <div id="leadModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 my-8 relative">
+            <div class="flex justify-between items-center mb-5 pb-3 border-b border-slate-100">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900">Заявка на підбір житла</h3>
+                    <p class="text-xs text-slate-500">Залиште параметри, і ми підберемо кращі варіанти</p>
+                </div>
+                <button onclick="closeLeadModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <form id="leadForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Ваше ім'я *</label>
+                    <input type="text" required id="leadName" placeholder="Олександр" class="w-full p-3 border border-slate-200 rounded-xl text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Номер телефону *</label>
+                    <input type="tel" required id="leadPhone" placeholder="+380 67 000 00 00" class="w-full p-3 border border-slate-200 rounded-xl text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Тип угоди</label>
+                        <select id="leadType" class="w-full p-3 border border-slate-200 rounded-xl text-sm">
+                            <option value="Купівля">Купівля</option>
+                            <option value="Оренда">Оренда</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Макс. бюджет ($)</label>
+                        <input type="number" id="leadBudget" placeholder="напр. 55000" class="w-full p-3 border border-slate-200 rounded-xl text-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Побажання (район, кількість кімнат тощо)</label>
+                    <textarea id="leadNotes" rows="3" placeholder="Шукаю 2-к квартиру в Центрі або на Пасічній з ремонтом..." class="w-full p-3 border border-slate-200 rounded-xl text-sm"></textarea>
+                </div>
+                <div class="pt-2 flex justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeLeadModal()" class="px-5 py-2.5 border rounded-xl text-sm">Скасувати</button>
+                    <button type="submit" id="leadSubmitBtn" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-bold shadow-md">Надіслати заявку</button>
                 </div>
             </form>
         </div>
@@ -317,49 +379,71 @@
                 const isFav = favorites.includes(item.id);
                 const img = item.image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80';
                 
-                // Переклад типу
                 const typeLabel = item.type === 'rent' ? 'Оренда' : 'Продаж';
                 const catLabel = item.category === 'house' ? 'Будинок' : (item.category === 'commercial' ? 'Комерція' : 'Квартира');
 
+                // Розрахунок ціни за м²
+                let pricePerSqM = null;
+                if (item.priceUSD && item.area && Number(item.area) > 0) {
+                    pricePerSqM = Math.round(Number(item.priceUSD) / Number(item.area));
+                }
+
+                // Цільове посилання для переходу
+                const targetUrl = item.rieltorUrl || '#';
+                const hasUrl = Boolean(item.rieltorUrl);
+
                 return `
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all flex flex-col justify-between">
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                     <div>
-                        <div class="relative h-56 bg-slate-100">
-                            <img src="${img}" class="w-full h-full object-cover">
+                        <!-- Клікабельне фото: Перехід на Rieltor.ua -->
+                        <div onclick="navigateToUrl('${targetUrl}')" class="relative h-56 bg-slate-100 ${hasUrl ? 'cursor-pointer' : ''} overflow-hidden">
+                            <img src="${img}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             
                             <!-- Теги типу та категорії -->
-                            <div class="absolute top-3 left-3 flex gap-2">
-                                <span class="px-3 py-1 rounded-full text-xs font-bold text-white bg-emerald-600 shadow-sm">
+                            <div class="absolute top-3 left-3 flex gap-2 z-10">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold text-white bg-emerald-600 shadow-md">
                                     ${typeLabel}
                                 </span>
-                                <span class="px-3 py-1 rounded-full text-xs font-bold text-white bg-slate-800/80 backdrop-blur-sm shadow-sm">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold text-white bg-slate-900/80 backdrop-blur-sm shadow-md">
                                     ${catLabel}
                                 </span>
                             </div>
 
-                            <div class="absolute top-3 right-3 flex gap-2">
-                                <button onclick="deleteProp('${item.id}')" class="w-8 h-8 bg-white/90 hover:bg-rose-600 text-slate-600 hover:text-white rounded-full flex items-center justify-center transition-colors">
+                            <!-- Кнопки швидкої дії -->
+                            <div class="absolute top-3 right-3 flex gap-2 z-10" onclick="event.stopPropagation()">
+                                <button onclick="deleteProp('${item.id}')" class="w-8 h-8 bg-white/90 hover:bg-rose-600 text-slate-600 hover:text-white rounded-full flex items-center justify-center transition-colors shadow-sm">
                                     <i class="fa-solid fa-trash-can text-xs"></i>
                                 </button>
-                                <button onclick="toggleFav('${item.id}')" class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center">
+                                <button onclick="toggleFav('${item.id}')" class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center shadow-sm">
                                     <i class="fa-${isFav ? 'solid text-rose-500' : 'regular text-slate-400'} fa-heart"></i>
                                 </button>
                             </div>
 
-                            <!-- Ціна поверх фото -->
-                            <div class="absolute bottom-3 left-3 text-white font-extrabold text-2xl drop-shadow-md">
-                                $${Number(item.priceUSD || 0).toLocaleString()}
+                            <!-- Ціна та Ціна за м² -->
+                            <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end text-white z-10 drop-shadow-md">
+                                <div>
+                                    <div class="font-black text-2xl tracking-tight">$${Number(item.priceUSD || 0).toLocaleString()}</div>
+                                </div>
+                                ${pricePerSqM ? `
+                                <div class="bg-slate-900/75 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-bold text-emerald-400 border border-white/10">
+                                    $${pricePerSqM} / м²
+                                </div>` : ''}
                             </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                         </div>
 
                         <div class="p-5">
                             <div class="text-xs text-emerald-700 font-bold uppercase tracking-wide mb-1">
                                 📍 ІВАНО-ФРАНКІВСЬК • ${item.district}
                             </div>
-                            <h3 class="font-bold text-slate-900 text-lg mb-1 leading-snug">${item.title}</h3>
+                            
+                            <!-- Клікабельний заголовок -->
+                            <h3 onclick="navigateToUrl('${targetUrl}')" class="font-bold text-slate-900 text-lg mb-1 leading-snug hover:text-emerald-600 ${hasUrl ? 'cursor-pointer' : ''} transition-colors">
+                                ${item.title}
+                            </h3>
                             <p class="text-xs text-slate-500 mb-4">${item.address || ''}</p>
 
-                            <!-- БЛОК З ПАРАМЕТРАМИ (Площа, Кімнат, Поверх) -->
+                            <!-- БЛОК ПАРАМЕТРІВ (Площа, Кімнат, Поверх) -->
                             <div class="bg-slate-50 rounded-xl p-3 mb-2 grid grid-cols-3 divide-x divide-slate-200 text-center border border-slate-100">
                                 <div class="px-1">
                                     <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">ПЛОЩА</div>
@@ -376,13 +460,29 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Кнопка відкриття оголошення -->
                     <div class="p-5 pt-0">
-                        ${item.rieltorUrl ? `<a href="${item.rieltorUrl}" target="_blank" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-colors">Переглянути <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>` : ''}
+                        ${hasUrl ? `
+                        <a href="${item.rieltorUrl}" target="_blank" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-colors shadow-sm">
+                            Переглянути оголошення <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </a>` : `
+                        <button disabled class="w-full py-3 bg-slate-100 text-slate-400 font-semibold text-sm rounded-xl cursor-not-allowed">
+                            Пряме посилання відсутнє
+                        </button>`}
                     </div>
                 </div>`;
             }).join('');
         }
 
+        // Перехід за посиланням
+        window.navigateToUrl = (url) => {
+            if (url && url !== '#') {
+                window.open(url, '_blank');
+            }
+        };
+
+        // Додавання об'єкта
         document.getElementById('addPropertyForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
@@ -413,9 +513,35 @@
             }
         });
 
+        // Надсилання заявки від клієнта (Підбір житла)
+        document.getElementById('leadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('leadSubmitBtn');
+            btn.disabled = true;
+            btn.innerText = "Надсилання...";
+
+            try {
+                await addDoc(collection(db, "leads"), {
+                    name: document.getElementById('leadName').value,
+                    phone: document.getElementById('leadPhone').value,
+                    type: document.getElementById('leadType').value,
+                    budget: Number(document.getElementById('leadBudget').value || 0),
+                    notes: document.getElementById('leadNotes').value,
+                    createdAt: serverTimestamp()
+                });
+                alert("Дякуємо! Ваша заявка прийнята. Ми зв'яжемося з вами найближчим часом.");
+                closeLeadModal();
+            } catch (err) {
+                alert("Помилка надсилання: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Надіслати заявку";
+            }
+        });
+
         window.deleteProp = async (id) => {
             if (confirm("Видалити об'єкт з бази?")) {
-                await deleteDoc(doc(db, "properties", id));
+                await deleteDoc(doc(doc(db, "properties", id)));
             }
         };
 
@@ -430,6 +556,10 @@
 
         window.openAddModal = () => document.getElementById('addModal').classList.remove('hidden');
         window.closeAddModal = () => document.getElementById('addModal').classList.add('hidden');
+
+        window.openLeadModal = () => document.getElementById('leadModal').classList.remove('hidden');
+        window.closeLeadModal = () => document.getElementById('leadModal').classList.add('hidden');
+
         window.resetFilters = () => {
             document.getElementById('searchInput').value = '';
             document.getElementById('typeFilter').value = 'all';
