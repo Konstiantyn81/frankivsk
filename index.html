@@ -233,7 +233,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Поверх</label>
-                        <input type="text" id="formFloor" placeholder="4/9" class="w-full p-3 border border-slate-200 rounded-xl text-sm">
+                        <input type="text" id="formFloor" placeholder="4/9 або 2 поверхи" class="w-full p-3 border border-slate-200 rounded-xl text-sm">
                     </div>
                 </div>
                 <div>
@@ -316,31 +316,68 @@
             grid.innerHTML = items.map(item => {
                 const isFav = favorites.includes(item.id);
                 const img = item.image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80';
+                
+                // Переклад типу
+                const typeLabel = item.type === 'rent' ? 'Оренда' : 'Продаж';
+                const catLabel = item.category === 'house' ? 'Будинок' : (item.category === 'commercial' ? 'Комерція' : 'Квартира');
+
                 return `
                 <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all flex flex-col justify-between">
                     <div>
-                        <div class="relative h-52 bg-slate-100">
+                        <div class="relative h-56 bg-slate-100">
                             <img src="${img}" class="w-full h-full object-cover">
-                            <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold text-white ${item.type === 'rent' ? 'bg-amber-500' : 'bg-brand-600'}">
-                                $${Number(item.priceUSD || 0).toLocaleString()}
-                            </span>
+                            
+                            <!-- Теги типу та категорії -->
+                            <div class="absolute top-3 left-3 flex gap-2">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold text-white bg-emerald-600 shadow-sm">
+                                    ${typeLabel}
+                                </span>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold text-white bg-slate-800/80 backdrop-blur-sm shadow-sm">
+                                    ${catLabel}
+                                </span>
+                            </div>
+
                             <div class="absolute top-3 right-3 flex gap-2">
-                                <button onclick="deleteProp('${item.id}')" class="w-8 h-8 bg-white/90 hover:bg-rose-600 text-slate-600 hover:text-white rounded-full flex items-center justify-center">
+                                <button onclick="deleteProp('${item.id}')" class="w-8 h-8 bg-white/90 hover:bg-rose-600 text-slate-600 hover:text-white rounded-full flex items-center justify-center transition-colors">
                                     <i class="fa-solid fa-trash-can text-xs"></i>
                                 </button>
                                 <button onclick="toggleFav('${item.id}')" class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center">
                                     <i class="fa-${isFav ? 'solid text-rose-500' : 'regular text-slate-400'} fa-heart"></i>
                                 </button>
                             </div>
+
+                            <!-- Ціна поверх фото -->
+                            <div class="absolute bottom-3 left-3 text-white font-extrabold text-2xl drop-shadow-md">
+                                $${Number(item.priceUSD || 0).toLocaleString()}
+                            </div>
                         </div>
+
                         <div class="p-5">
-                            <div class="text-xs text-brand-700 font-semibold mb-1">📍 Івано-Франківськ, р-н ${item.district}</div>
-                            <h3 class="font-bold text-slate-900 text-base mb-1">${item.title}</h3>
-                            <p class="text-xs text-slate-500 mb-3">${item.address || ''}</p>
+                            <div class="text-xs text-emerald-700 font-bold uppercase tracking-wide mb-1">
+                                📍 ІВАНО-ФРАНКІВСЬК • ${item.district}
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-lg mb-1 leading-snug">${item.title}</h3>
+                            <p class="text-xs text-slate-500 mb-4">${item.address || ''}</p>
+
+                            <!-- БЛОК З ПАРАМЕТРАМИ (Площа, Кімнат, Поверх) -->
+                            <div class="bg-slate-50 rounded-xl p-3 mb-2 grid grid-cols-3 divide-x divide-slate-200 text-center border border-slate-100">
+                                <div class="px-1">
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">ПЛОЩА</div>
+                                    <div class="text-sm font-extrabold text-slate-800">${item.area ? item.area + ' м²' : '-'}</div>
+                                </div>
+                                <div class="px-1">
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">КІМНАТ</div>
+                                    <div class="text-sm font-extrabold text-slate-800">${item.rooms || '-'}</div>
+                                </div>
+                                <div class="px-1">
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">ПОВЕРХ</div>
+                                    <div class="text-sm font-extrabold text-slate-800">${item.floor || '-'}</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="p-5 pt-0">
-                        ${item.rieltorUrl ? `<a href="${item.rieltorUrl}" target="_blank" class="w-full py-2.5 bg-brand-600 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2">Переглянути Rieltor.ua <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>` : ''}
+                        ${item.rieltorUrl ? `<a href="${item.rieltorUrl}" target="_blank" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-colors">Переглянути <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>` : ''}
                     </div>
                 </div>`;
             }).join('');
