@@ -539,11 +539,16 @@
             }
         });
 
-        window.deleteProp = async (id) => {
-            if (confirm("Видалити об'єкт з бази?")) {
-                await deleteDoc(doc(doc(db, "properties", id)));
-            }
-        };
+      window.deleteProp = async (id) => {
+    if (confirm("Видалити цей об'єкт з бази?")) {
+        try {
+            await deleteDoc(doc(db, "properties", id));
+            alert("Об'єкт успішно видалено!");
+        } catch (err) {
+            alert("Помилка видалення: " + err.message);
+        }
+    }
+};
 
         window.toggleFav = (id) => {
             const idx = favorites.indexOf(id);
